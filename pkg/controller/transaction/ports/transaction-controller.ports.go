@@ -5,6 +5,6 @@ import (
 )
 
 type CreateTransactionControllerPorts interface {
-	Create(transaction_domain.TransactionDomain) (*transaction_domain.TransactionDomain, error)
+	Create(*transaction_domain.TransactionDomain) (*transaction_domain.TransactionDomain, error)
 	// get by id, name dll
 }

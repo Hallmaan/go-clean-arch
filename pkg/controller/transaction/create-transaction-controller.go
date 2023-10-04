@@ -21,7 +21,7 @@ func NewCreateTransactionController(ucase transaction_ucase_ports.CreateTransact
 	}
 }
 
-func (c CreateTransactionController) Create(trx transaction_domain.TransactionDomain) (*transaction_domain.TransactionDomain, error) {
+func (c CreateTransactionController) Create(trx *transaction_domain.TransactionDomain) (*transaction_domain.TransactionDomain, error) {
 	ctx := context.Background()
 	x, err := c.CreateTransactionUseCase.Create(ctx, trx)
 

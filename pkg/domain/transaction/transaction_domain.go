@@ -7,7 +7,7 @@ import (
 
 type TransactionDomain struct {
 	ID      int64
-	TrxName string `db:"transaction_name"`
+	TrxName string `db:"transaction_name" json:"transaction_name"`
 	Product *pd.ProductDomain
 }
 

@@ -21,7 +21,6 @@ func NewTransactionMysqlRepositoryImpl(conn *sqlx.DB) mysql_ports.TransactionRep
 
 func (trx TransactionMysqlRepositoryImpl) Get(ctx context.Context, id int64) (*transaction_domain.TransactionDomain, error) {
 	sql := fmt.Sprintf(`select id, transaction_name from transactions where id = %d`, id)
-	fmt.Println(sql, "ini sqlnya")
 
 	trxDomain := &transaction_domain.TransactionDomain{}
 

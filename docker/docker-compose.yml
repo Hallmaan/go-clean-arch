@@ -1,0 +1,16 @@
+version: '3'
+services:
+  nats.js.local:
+    container_name: nats-js-local
+    image: nats:latest
+    entrypoint: /nats-server
+    command: --js --sd /data -p 4222
+    networks:
+    - nats
+    ports:
+    - 4222:4222
+    volumes:
+    - ./jetstream-cluster/n1:/data
+
+networks:
+  nats: {}

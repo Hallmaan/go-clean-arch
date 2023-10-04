@@ -6,6 +6,6 @@ import (
 )
 
 type CreateTransactionUseCasePorts interface {
-	Create(ctx context.Context, trx transaction_domain.TransactionDomain) (*transaction_domain.TransactionDomain, error)
+	Create(ctx context.Context, trx *transaction_domain.TransactionDomain) (*transaction_domain.TransactionDomain, error)
 	// create with product dll
 }
