@@ -45,7 +45,7 @@ func main() {
 	}
 
 	natsKv := nats_repository_impl.NewRepositoryNats(natsJSClient, multipleNatsClient)
-	createTrxUcase := ucase_transaction.NewAddTrxUsecase(trxRepo, GetProductUcase, natsKv, natsJSClient)
+	createTrxUcase := ucase_transaction.NewAddTrxUsecase(trxRepo, GetProductUcase, natsKv, multipleNatsClient)
 	trxController := transaction_controller.NewCreateTransactionController(createTrxUcase, trxRepo)
 
 	// tx, err := trxController.Create(transaction_domain.TransactionDomain{TrxName: "Transaction 2", Product: res})
@@ -60,7 +60,7 @@ func main() {
 
 	trxTransporter := transporter.NewTransactionTransporter(trxController)
 
-	router := router.NewRouter(trxTransporter, natsJSClient)
+	router := router.NewRouter(trxTransporter, multipleNatsClient)
 
 	server := http.Server{
 		Addr:    ":3000",

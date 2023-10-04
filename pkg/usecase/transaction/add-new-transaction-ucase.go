@@ -18,15 +18,15 @@ type AddNewTransactionUCase struct {
 	TransactionRepo mysql_ports.TransactionRepository
 	GetProductUcase product_ports.GetProductUcasePorts
 	NatsKv          nats_ports.RepositoryNats
-	NatsJSClient    nats.JetStreamContext
+	Nats            *nats.Conn
 }
 
-func NewAddTrxUsecase(trxRepo mysql_ports.TransactionRepository, pdUcase product_ports.GetProductUcasePorts, natsKv nats_ports.RepositoryNats, natsJSClient nats.JetStreamContext) transaction_ucase_ports.CreateTransactionUseCasePorts {
+func NewAddTrxUsecase(trxRepo mysql_ports.TransactionRepository, pdUcase product_ports.GetProductUcasePorts, natsKv nats_ports.RepositoryNats, natsJSClient *nats.Conn) transaction_ucase_ports.CreateTransactionUseCasePorts {
 	return &AddNewTransactionUCase{
 		TransactionRepo: trxRepo,
 		GetProductUcase: pdUcase,
 		NatsKv:          natsKv,
-		NatsJSClient:    natsJSClient,
+		Nats:            natsJSClient,
 	}
 }
 
@@ -61,7 +61,7 @@ func (trx AddNewTransactionUCase) Create(ctx context.Context, p *transaction_dom
 
 	message := fmt.Sprintf("Transaction diterima ke-%d", getTrx.GetId())
 
-	_, err = trx.NatsJSClient.Publish("TransactionUpdates", []byte(message))
+	err = trx.Nats.Publish("TransactionUpdates", []byte(message))
 
 	if err != nil {
 		fmt.Println("error publish :", err)

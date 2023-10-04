@@ -10,7 +10,7 @@ import (
 
 func NewRouter(
 	transactionTransporter *transporter.TransactionTransporter,
-	nats nats.JetStreamContext,
+	nats *nats.Conn,
 ) *httprouter.Router {
 	router := httprouter.New()
 

@@ -10,10 +10,10 @@ import (
 )
 
 type WebSocketTransports struct {
-	NatsJs nats.JetStreamContext
+	NatsJs *nats.Conn
 }
 
-func NewWSTransports(nats nats.JetStreamContext) *WebSocketTransports {
+func NewWSTransports(nats *nats.Conn) *WebSocketTransports {
 	return &WebSocketTransports{
 		NatsJs: nats,
 	}
@@ -45,8 +45,10 @@ func (ws WebSocketTransports) HandleWebSocket(w http.ResponseWriter, r *http.Req
 		// }
 
 		_, err = ws.NatsJs.Subscribe("TransactionUpdates", func(msg *nats.Msg) {
+			fmt.Println("ready to subscribe")
 			// Kirim data yang diterima ke klien WebSocket
 			data := msg.Data
+			fmt.Println(data, "data subs")
 			// Kirim data ke klien WebSocket yang terhubung
 			// Menampilkan pesan yang diterima di server
 			fmt.Printf("Menerima pesan: %s\n", data)
@@ -58,5 +60,7 @@ func (ws WebSocketTransports) HandleWebSocket(w http.ResponseWriter, r *http.Req
 				return
 			}
 		})
+
+		// fmt.Println(resx, err, "err subscribe")
 	}
 }
