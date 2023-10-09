@@ -1,8 +1,8 @@
 package mysql_ports
 
 import (
-	product_domain "clean_arch_ws/pkg/domain/product"
-	transaction_domain "clean_arch_ws/pkg/domain/transaction"
+	product_domain "clean_arch_ws/internal/entities/product"
+	transaction_domain "clean_arch_ws/internal/entities/transaction"
 	"context"
 )
 

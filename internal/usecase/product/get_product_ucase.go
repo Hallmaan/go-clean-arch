@@ -1,18 +1,22 @@
 package ucase_product
 
 import (
-	product_domain "clean_arch_ws/pkg/domain/product"
-	product_ucase_ports "clean_arch_ws/pkg/usecase/product/ports"
+	product_domain "clean_arch_ws/internal/entities/product"
 	mysql_ports "clean_arch_ws/repository/mysql/ports"
 	"context"
 	"errors"
 )
 
+type GetProductUcasePorts interface {
+	Get(ctx context.Context, id int) (*product_domain.ProductDomain, error)
+	// get by id, name dll
+}
+
 type GetProductUcase struct {
 	ProductRepository mysql_ports.ProductRepository
 }
 
-func NewGetProductByIdUCase(pdRepo mysql_ports.ProductRepository) product_ucase_ports.GetProductUcasePorts {
+func NewGetProductByIdUCase(pdRepo mysql_ports.ProductRepository) GetProductUcasePorts {
 	return &GetProductUcase{
 		ProductRepository: pdRepo,
 	}

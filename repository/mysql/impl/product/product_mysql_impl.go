@@ -1,7 +1,7 @@
 package product_mysql_impl
 
 import (
-	product_domain "clean_arch_ws/pkg/domain/product"
+	product_domain "clean_arch_ws/internal/entities/product"
 	mysql_ports "clean_arch_ws/repository/mysql/ports"
 	"context"
 	"fmt"

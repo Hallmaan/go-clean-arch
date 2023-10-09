@@ -1,20 +1,23 @@
 package product_controller
 
 import (
-	product_controller_ports "clean_arch_ws/pkg/controller/product/ports"
-	product_domain "clean_arch_ws/pkg/domain/product"
-	product_ucase_ports "clean_arch_ws/pkg/usecase/product/ports"
+	product_domain "clean_arch_ws/internal/entities/product"
+	ucase_product "clean_arch_ws/internal/usecase/product"
 	mysql_ports "clean_arch_ws/repository/mysql/ports"
 	"context"
 	"fmt"
 )
 
+type GetProductControllerPorts interface {
+	Get(id int) (*product_domain.ProductDomain, error)
+}
+
 type GetProductController struct {
-	GetProductUcase product_ucase_ports.GetProductUcasePorts
+	GetProductUcase ucase_product.GetProductUcasePorts
 	ProductRepo     mysql_ports.ProductRepository
 }
 
-func NewGetProductController(ucase product_ucase_ports.GetProductUcasePorts, repo mysql_ports.ProductRepository) product_controller_ports.GetProductControllerPorts {
+func NewGetProductController(ucase ucase_product.GetProductUcasePorts, repo mysql_ports.ProductRepository) GetProductControllerPorts {
 	return &GetProductController{
 		GetProductUcase: ucase,
 		ProductRepo:     repo,

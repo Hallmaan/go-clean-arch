@@ -1,9 +1,8 @@
 package ucase_transaction
 
 import (
-	transaction_domain "clean_arch_ws/pkg/domain/transaction"
-	product_ports "clean_arch_ws/pkg/usecase/product/ports"
-	transaction_ucase_ports "clean_arch_ws/pkg/usecase/transaction/ports"
+	transaction_domain "clean_arch_ws/internal/entities/transaction"
+	ucase_product "clean_arch_ws/internal/usecase/product"
 	mysql_ports "clean_arch_ws/repository/mysql/ports"
 	nats_ports "clean_arch_ws/repository/nats/ports"
 	"context"
@@ -14,14 +13,19 @@ import (
 	"github.com/nats-io/nats.go"
 )
 
+type CreateTransactionUseCasePorts interface {
+	Create(ctx context.Context, trx *transaction_domain.TransactionDomain) (*transaction_domain.TransactionDomain, error)
+	// create with product dll
+}
+
 type AddNewTransactionUCase struct {
 	TransactionRepo mysql_ports.TransactionRepository
-	GetProductUcase product_ports.GetProductUcasePorts
+	GetProductUcase ucase_product.GetProductUcasePorts
 	NatsKv          nats_ports.RepositoryNats
 	Nats            *nats.Conn
 }
 
-func NewAddTrxUsecase(trxRepo mysql_ports.TransactionRepository, pdUcase product_ports.GetProductUcasePorts, natsKv nats_ports.RepositoryNats, natsJSClient *nats.Conn) transaction_ucase_ports.CreateTransactionUseCasePorts {
+func NewAddTrxUsecase(trxRepo mysql_ports.TransactionRepository, pdUcase ucase_product.GetProductUcasePorts, natsKv nats_ports.RepositoryNats, natsJSClient *nats.Conn) CreateTransactionUseCasePorts {
 	return &AddNewTransactionUCase{
 		TransactionRepo: trxRepo,
 		GetProductUcase: pdUcase,

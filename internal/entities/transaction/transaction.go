@@ -1,7 +1,7 @@
 package transaction_domain
 
 import (
-	pd "clean_arch_ws/pkg/domain/product"
+	pd "clean_arch_ws/internal/entities/product"
 	"errors"
 )
 

@@ -1,9 +1,9 @@
 package main
 
 import (
-	transaction_controller "clean_arch_ws/pkg/controller/transaction"
-	ucase_product "clean_arch_ws/pkg/usecase/product"
-	ucase_transaction "clean_arch_ws/pkg/usecase/transaction"
+	transaction_controller "clean_arch_ws/internal/controller/transaction"
+	ucase_product "clean_arch_ws/internal/usecase/product"
+	ucase_transaction "clean_arch_ws/internal/usecase/transaction"
 	database_mysql "clean_arch_ws/repository/mysql"
 	product_mysql_impl "clean_arch_ws/repository/mysql/impl/product"
 	transaction_mysql_impl "clean_arch_ws/repository/mysql/impl/transaction"

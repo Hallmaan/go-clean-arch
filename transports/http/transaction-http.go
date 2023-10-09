@@ -1,8 +1,8 @@
 package transport_http_transaction
 
 import (
-	transaction_controller_ports "clean_arch_ws/pkg/controller/transaction/ports"
-	transaction_domain "clean_arch_ws/pkg/domain/transaction"
+	transaction_controller "clean_arch_ws/internal/controller/transaction"
+	transaction_domain "clean_arch_ws/internal/entities/transaction"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -16,10 +16,10 @@ type OutputResponse struct {
 }
 
 type TransactionTransporter struct {
-	TransactionCreateController transaction_controller_ports.CreateTransactionControllerPorts
+	TransactionCreateController transaction_controller.CreateTransactionControllerPorts
 }
 
-func NewTransactionTransporter(trxController transaction_controller_ports.CreateTransactionControllerPorts) *TransactionTransporter {
+func NewTransactionTransporter(trxController transaction_controller.CreateTransactionControllerPorts) *TransactionTransporter {
 	return &TransactionTransporter{
 		TransactionCreateController: trxController,
 	}

@@ -1,7 +1,7 @@
 package transaction_mysql_impl
 
 import (
-	transaction_domain "clean_arch_ws/pkg/domain/transaction"
+	transaction_domain "clean_arch_ws/internal/entities/transaction"
 	mysql_ports "clean_arch_ws/repository/mysql/ports"
 	"context"
 	"fmt"
