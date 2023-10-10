@@ -1,7 +1,7 @@
 package transaction_controller
 
 import (
-	transaction_domain "clean_arch_ws/internal/entities/transaction"
+	"clean_arch_ws/internal/entities"
 	ucase_transaction "clean_arch_ws/internal/usecase/transaction"
 	mysql_ports "clean_arch_ws/repository/mysql/ports"
 	"context"
@@ -9,7 +9,7 @@ import (
 )
 
 type CreateTransactionControllerPorts interface {
-	Create(*transaction_domain.TransactionDomain) (*transaction_domain.TransactionDomain, error)
+	Create(*entities.TransactionDomain) (*entities.TransactionDomain, error)
 }
 
 type CreateTransactionController struct {
@@ -24,7 +24,7 @@ func NewCreateTransactionController(ucase ucase_transaction.CreateTransactionUse
 	}
 }
 
-func (c CreateTransactionController) Create(trx *transaction_domain.TransactionDomain) (*transaction_domain.TransactionDomain, error) {
+func (c CreateTransactionController) Create(trx *entities.TransactionDomain) (*entities.TransactionDomain, error) {
 	ctx := context.Background()
 	x, err := c.CreateTransactionUseCase.Create(ctx, trx)
 

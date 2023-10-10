@@ -1,7 +1,7 @@
 package product_controller
 
 import (
-	product_domain "clean_arch_ws/internal/entities/product"
+	"clean_arch_ws/internal/entities"
 	ucase_product "clean_arch_ws/internal/usecase/product"
 	mysql_ports "clean_arch_ws/repository/mysql/ports"
 	"context"
@@ -9,7 +9,7 @@ import (
 )
 
 type GetProductControllerPorts interface {
-	Get(id int) (*product_domain.ProductDomain, error)
+	Get(id int) (*entities.ProductDomain, error)
 }
 
 type GetProductController struct {
@@ -24,7 +24,7 @@ func NewGetProductController(ucase ucase_product.GetProductUcasePorts, repo mysq
 	}
 }
 
-func (c GetProductController) Get(id int) (*product_domain.ProductDomain, error) {
+func (c GetProductController) Get(id int) (*entities.ProductDomain, error) {
 	ctx := context.Background()
 	x, err := c.GetProductUcase.Get(ctx, id)
 

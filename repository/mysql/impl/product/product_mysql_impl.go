@@ -1,7 +1,7 @@
 package product_mysql_impl
 
 import (
-	product_domain "clean_arch_ws/internal/entities/product"
+	"clean_arch_ws/internal/entities"
 	mysql_ports "clean_arch_ws/repository/mysql/ports"
 	"context"
 	"fmt"
@@ -19,10 +19,10 @@ func NewProductMysqlRepositoryImpl(conn *sqlx.DB) mysql_ports.ProductRepository 
 	}
 }
 
-func (pd ProductMysqlRepositoryImpl) Get(ctx context.Context, id int) (*product_domain.ProductDomain, error) {
+func (pd ProductMysqlRepositoryImpl) Get(ctx context.Context, id int) (*entities.ProductDomain, error) {
 	sql := fmt.Sprintf(`select * from products where id = %d`, id)
 
-	pdDomain := &product_domain.ProductDomain{}
+	pdDomain := &entities.ProductDomain{}
 
 	err := pd.conn.GetContext(ctx, pdDomain, sql)
 

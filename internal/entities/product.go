@@ -1,4 +1,4 @@
-package product_domain
+package entities
 
 import "errors"
 

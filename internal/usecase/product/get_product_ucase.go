@@ -1,14 +1,14 @@
 package ucase_product
 
 import (
-	product_domain "clean_arch_ws/internal/entities/product"
+	"clean_arch_ws/internal/entities"
 	mysql_ports "clean_arch_ws/repository/mysql/ports"
 	"context"
 	"errors"
 )
 
 type GetProductUcasePorts interface {
-	Get(ctx context.Context, id int) (*product_domain.ProductDomain, error)
+	Get(ctx context.Context, id int) (*entities.ProductDomain, error)
 	// get by id, name dll
 }
 
@@ -22,7 +22,7 @@ func NewGetProductByIdUCase(pdRepo mysql_ports.ProductRepository) GetProductUcas
 	}
 }
 
-func (pd GetProductUcase) Get(ctx context.Context, id int) (*product_domain.ProductDomain, error) {
+func (pd GetProductUcase) Get(ctx context.Context, id int) (*entities.ProductDomain, error) {
 	res, err := pd.ProductRepository.Get(ctx, id)
 
 	if res == nil || err != nil {

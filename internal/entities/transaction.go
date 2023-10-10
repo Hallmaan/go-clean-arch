@@ -1,17 +1,16 @@
-package transaction_domain
+package entities
 
 import (
-	pd "clean_arch_ws/internal/entities/product"
 	"errors"
 )
 
 type TransactionDomain struct {
 	ID      int64
 	TrxName string `db:"transaction_name" json:"transaction_name"`
-	Product *pd.ProductDomain
+	Product *ProductDomain
 }
 
-func NewTransaction(id int64, name string, product *pd.ProductDomain) (trx *TransactionDomain, err error) {
+func NewTransaction(id int64, name string, product *ProductDomain) (trx *TransactionDomain, err error) {
 	if id == 0 {
 		return nil, errors.New("error id tidak boleh kosong")
 	}
@@ -35,6 +34,6 @@ func (trx TransactionDomain) GetId() int64 {
 	return trx.ID
 }
 
-func (trx TransactionDomain) GetProduct() pd.ProductDomain {
+func (trx TransactionDomain) GetProduct() ProductDomain {
 	return *trx.Product
 }

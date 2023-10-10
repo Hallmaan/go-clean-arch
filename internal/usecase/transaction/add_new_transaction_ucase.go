@@ -1,7 +1,7 @@
 package ucase_transaction
 
 import (
-	transaction_domain "clean_arch_ws/internal/entities/transaction"
+	"clean_arch_ws/internal/entities"
 	ucase_product "clean_arch_ws/internal/usecase/product"
 	mysql_ports "clean_arch_ws/repository/mysql/ports"
 	nats_ports "clean_arch_ws/repository/nats/ports"
@@ -14,7 +14,7 @@ import (
 )
 
 type CreateTransactionUseCasePorts interface {
-	Create(ctx context.Context, trx *transaction_domain.TransactionDomain) (*transaction_domain.TransactionDomain, error)
+	Create(ctx context.Context, trx *entities.TransactionDomain) (*entities.TransactionDomain, error)
 	// create with product dll
 }
 
@@ -34,7 +34,7 @@ func NewAddTrxUsecase(trxRepo mysql_ports.TransactionRepository, pdUcase ucase_p
 	}
 }
 
-func (trx AddNewTransactionUCase) Create(ctx context.Context, p *transaction_domain.TransactionDomain) (*transaction_domain.TransactionDomain, error) {
+func (trx AddNewTransactionUCase) Create(ctx context.Context, p *entities.TransactionDomain) (*entities.TransactionDomain, error) {
 	res, err := trx.GetProductUcase.Get(ctx, 1)
 
 	if res == nil || err != nil {

@@ -2,7 +2,7 @@ package transport_http_transaction
 
 import (
 	transaction_controller "clean_arch_ws/internal/controller/transaction"
-	transaction_domain "clean_arch_ws/internal/entities/transaction"
+	"clean_arch_ws/internal/entities"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -26,7 +26,7 @@ func NewTransactionTransporter(trxController transaction_controller.CreateTransa
 }
 
 func (t *TransactionTransporter) CreateTransaction(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-	domain := transaction_domain.TransactionDomain{}
+	domain := entities.TransactionDomain{}
 
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(&domain)

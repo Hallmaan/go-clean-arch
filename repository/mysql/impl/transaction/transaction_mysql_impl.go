@@ -1,7 +1,7 @@
 package transaction_mysql_impl
 
 import (
-	transaction_domain "clean_arch_ws/internal/entities/transaction"
+	"clean_arch_ws/internal/entities"
 	mysql_ports "clean_arch_ws/repository/mysql/ports"
 	"context"
 	"fmt"
@@ -19,10 +19,10 @@ func NewTransactionMysqlRepositoryImpl(conn *sqlx.DB) mysql_ports.TransactionRep
 	}
 }
 
-func (trx TransactionMysqlRepositoryImpl) Get(ctx context.Context, id int64) (*transaction_domain.TransactionDomain, error) {
+func (trx TransactionMysqlRepositoryImpl) Get(ctx context.Context, id int64) (*entities.TransactionDomain, error) {
 	sql := fmt.Sprintf(`select id, transaction_name from transactions where id = %d`, id)
 
-	trxDomain := &transaction_domain.TransactionDomain{}
+	trxDomain := &entities.TransactionDomain{}
 
 	err := trx.conn.GetContext(ctx, trxDomain, sql)
 
@@ -33,7 +33,7 @@ func (trx TransactionMysqlRepositoryImpl) Get(ctx context.Context, id int64) (*t
 	return trxDomain, nil
 }
 
-func (trx TransactionMysqlRepositoryImpl) Create(ctx context.Context, transaction *transaction_domain.TransactionDomain) (int64, error) {
+func (trx TransactionMysqlRepositoryImpl) Create(ctx context.Context, transaction *entities.TransactionDomain) (int64, error) {
 	sql := `INSERT INTO transactions (transaction_name, product_id) VALUES (?, ?)`
 
 	res, err := trx.conn.ExecContext(ctx, sql, transaction.TrxName, transaction.Product.ID)
