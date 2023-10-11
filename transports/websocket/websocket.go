@@ -44,7 +44,7 @@ func (ws WebSocketTransports) HandleWebSocket(w http.ResponseWriter, r *http.Req
 		// 	return
 		// }
 
-		_, err = ws.NatsJs.Subscribe("TransactionUpdates", func(msg *nats.Msg) {
+		resx, err := ws.NatsJs.Subscribe("TransactionUpdates", func(msg *nats.Msg) {
 			fmt.Println("ready to subscribe")
 			// Kirim data yang diterima ke klien WebSocket
 			data := msg.Data
@@ -61,6 +61,6 @@ func (ws WebSocketTransports) HandleWebSocket(w http.ResponseWriter, r *http.Req
 			}
 		})
 
-		// fmt.Println(resx, err, "err subscribe")
+		fmt.Println(resx, err, "err subscribe")
 	}
 }

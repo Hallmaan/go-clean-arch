@@ -23,7 +23,7 @@ func NewGetProductByIdUCase(pdRepo mysql_ports.ProductRepository) GetProductUcas
 }
 
 func (pd GetProductUcase) Get(ctx context.Context, id int) (*entities.ProductDomain, error) {
-	res, err := pd.ProductRepository.Get(ctx, id)
+	res, err := pd.ProductRepository.GetProduct(ctx, id)
 
 	if res == nil || err != nil {
 		return nil, errors.New("product not found")

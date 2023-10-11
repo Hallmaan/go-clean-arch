@@ -3,7 +3,6 @@ package transaction_controller
 import (
 	"clean_arch_ws/internal/entities"
 	ucase_transaction "clean_arch_ws/internal/usecase/transaction"
-	mysql_ports "clean_arch_ws/repository/mysql/ports"
 	"context"
 	"fmt"
 )
@@ -14,13 +13,11 @@ type CreateTransactionControllerPorts interface {
 
 type CreateTransactionController struct {
 	CreateTransactionUseCase ucase_transaction.CreateTransactionUseCasePorts
-	TransactionRepository    mysql_ports.TransactionRepository
 }
 
-func NewCreateTransactionController(ucase ucase_transaction.CreateTransactionUseCasePorts, repo mysql_ports.TransactionRepository) CreateTransactionControllerPorts {
+func NewCreateTransactionController(ucase ucase_transaction.CreateTransactionUseCasePorts) CreateTransactionControllerPorts {
 	return &CreateTransactionController{
 		CreateTransactionUseCase: ucase,
-		TransactionRepository:    repo,
 	}
 }
 

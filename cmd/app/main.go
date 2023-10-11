@@ -4,9 +4,8 @@ import (
 	transaction_controller "clean_arch_ws/internal/controller/transaction"
 	ucase_product "clean_arch_ws/internal/usecase/product"
 	ucase_transaction "clean_arch_ws/internal/usecase/transaction"
-	database_mysql "clean_arch_ws/repository/mysql"
-	product_mysql_impl "clean_arch_ws/repository/mysql/impl/product"
-	transaction_mysql_impl "clean_arch_ws/repository/mysql/impl/transaction"
+	"clean_arch_ws/repository/initializer"
+	mysqlrepo "clean_arch_ws/repository/mysql"
 	nats_repository_impl "clean_arch_ws/repository/nats/impl"
 	transporter "clean_arch_ws/transports/http"
 	"clean_arch_ws/transports/http/router"
@@ -17,23 +16,13 @@ import (
 )
 
 func main() {
-	db := database_mysql.NewDB()
+	db := initializer.NewMySQLInit()
+	mysqlRepo := mysqlrepo.NewMySQL(db)
 
 	/// GET PRODUCT USECASE
-	ProductRepo := product_mysql_impl.NewProductMysqlRepositoryImpl(db)
-	GetProductUcase := ucase_product.NewGetProductByIdUCase(ProductRepo)
-	// ProductController := product_controller.NewGetProductController(GetProductUcase, ProductRepo)
-
-	// res, err := ProductController.Get(1)
-
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-
-	// fmt.Println(res, "<<<<<< GET PRODUCT USECASE")
+	GetProductUcase := ucase_product.NewGetProductByIdUCase(mysqlRepo)
 
 	// CREATE TRANSACTION USECASE
-	trxRepo := transaction_mysql_impl.NewTransactionMysqlRepositoryImpl(db)
 	multipleNatsClient, err := nats_repository_impl.NewMultipleNatsClient()
 	if err != nil {
 		panic(err)
@@ -45,19 +34,8 @@ func main() {
 	}
 
 	natsKv := nats_repository_impl.NewRepositoryNats(natsJSClient, multipleNatsClient)
-	createTrxUcase := ucase_transaction.NewAddTrxUsecase(trxRepo, GetProductUcase, natsKv, multipleNatsClient)
-	trxController := transaction_controller.NewCreateTransactionController(createTrxUcase, trxRepo)
-
-	// tx, err := trxController.Create(transaction_domain.TransactionDomain{TrxName: "Transaction 2", Product: res})
-
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-
-	// fmt.Println(tx, "<<<<<< CREATE TRANSACTIONS")
-
-	// setupRoutes()
-
+	createTrxUcase := ucase_transaction.NewAddTrxUsecase(mysqlRepo, GetProductUcase, natsKv, multipleNatsClient)
+	trxController := transaction_controller.NewCreateTransactionController(createTrxUcase)
 	trxTransporter := transporter.NewTransactionTransporter(trxController)
 
 	router := router.NewRouter(trxTransporter, multipleNatsClient)

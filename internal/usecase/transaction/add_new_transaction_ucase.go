@@ -3,7 +3,7 @@ package ucase_transaction
 import (
 	"clean_arch_ws/internal/entities"
 	ucase_product "clean_arch_ws/internal/usecase/product"
-	mysql_ports "clean_arch_ws/repository/mysql/ports"
+	mysqlrepo "clean_arch_ws/repository/mysql"
 	nats_ports "clean_arch_ws/repository/nats/ports"
 	"context"
 	"errors"
@@ -19,13 +19,13 @@ type CreateTransactionUseCasePorts interface {
 }
 
 type AddNewTransactionUCase struct {
-	TransactionRepo mysql_ports.TransactionRepository
+	TransactionRepo mysqlrepo.SqlInterface
 	GetProductUcase ucase_product.GetProductUcasePorts
 	NatsKv          nats_ports.RepositoryNats
 	Nats            *nats.Conn
 }
 
-func NewAddTrxUsecase(trxRepo mysql_ports.TransactionRepository, pdUcase ucase_product.GetProductUcasePorts, natsKv nats_ports.RepositoryNats, natsJSClient *nats.Conn) CreateTransactionUseCasePorts {
+func NewAddTrxUsecase(trxRepo mysqlrepo.SqlInterface, pdUcase ucase_product.GetProductUcasePorts, natsKv nats_ports.RepositoryNats, natsJSClient *nats.Conn) CreateTransactionUseCasePorts {
 	return &AddNewTransactionUCase{
 		TransactionRepo: trxRepo,
 		GetProductUcase: pdUcase,
@@ -43,13 +43,35 @@ func (trx AddNewTransactionUCase) Create(ctx context.Context, p *entities.Transa
 
 	p.Product = res
 
-	trxCreateId, err := trx.TransactionRepo.Create(ctx, p)
+	trxCreateId, err := trx.TransactionRepo.CreateTransaction(ctx, p)
+
+	/** TEST TRANSACTION */
+
+	err = trx.TransactionRepo.Transaction(ctx, func(ctx context.Context) error {
+		var err error
+		xx, err := trx.TransactionRepo.CreateTransaction(ctx, p)
+
+		s := fmt.Sprintf("TEST DARI TRANSACTION %d", xx)
+		p.TrxName = s
+		fmt.Println(s, "ono s")
+
+		_, err = trx.TransactionRepo.CreateTransaction(ctx, p)
+		//panic(err)
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		return nil
+	})
+
+	/** */
 
 	if err != nil {
 		return nil, err
 	}
 
-	getTrx, err := trx.TransactionRepo.Get(ctx, trxCreateId)
+	getTrx, err := trx.TransactionRepo.GetTransaction(ctx, trxCreateId)
 
 	if err != nil {
 		return nil, err

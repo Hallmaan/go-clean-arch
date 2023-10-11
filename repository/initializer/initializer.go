@@ -1,7 +1,7 @@
-package mysql_initializer
+package initializer
 
 import (
-	database_mysql "clean_arch_ws/repository/mysql"
+	conn "clean_arch_ws/repository/mysql/connection"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -10,18 +10,9 @@ type Replication struct {
 	Standby *sqlx.DB
 }
 
-type MysqlInitializer struct {
-	DbHostPrimary string
-	DbHostStandby string
-	DbPort        string
-	DbUser        string
-	DbPass        string
-	DbName        string
-}
-
-func (mi MysqlInitializer) MySQLInit() *Replication {
+func NewMySQLInit() *Replication {
 	return &Replication{
-		Primary: database_mysql.NewDB(mi.DbHostPrimary, mi.DbPort, mi.DbUser, mi.DbPass, mi.DbName),
-		Standby: database_mysql.NewDB(mi.DbHostPrimary, mi.DbPort, mi.DbUser, mi.DbPass, mi.DbName),
+		Primary: conn.NewDB("localhost", "3306", "root", "1234lupa", "test-db"),
+		Standby: conn.NewDB("localhost", "3306", "root", "1234lupa", "test-db"),
 	}
 }

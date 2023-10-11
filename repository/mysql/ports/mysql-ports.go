@@ -6,10 +6,10 @@ import (
 )
 
 type TransactionRepository interface {
-	Get(ctx context.Context, transaction_id int64) (*entities.TransactionDomain, error)
-	Create(ctx context.Context, transaction *entities.TransactionDomain) (int64, error)
+	GetTransaction(ctx context.Context, transaction_id int64) (*entities.TransactionDomain, error)
+	CreateTransaction(ctx context.Context, transaction *entities.TransactionDomain) (int64, error)
 }
 
 type ProductRepository interface {
-	Get(ctx context.Context, id int) (*entities.ProductDomain, error)
+	GetProduct(ctx context.Context, id int) (*entities.ProductDomain, error)
 }

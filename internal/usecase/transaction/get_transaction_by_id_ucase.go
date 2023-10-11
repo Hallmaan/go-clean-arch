@@ -24,7 +24,7 @@ func NewGetTransactionByIdUCase(trxRepo mysql_ports.TransactionRepository, conn 
 }
 
 func (trx AddNewTransactionUCase) GetTransactionById(ctx context.Context, id int64) (*entities.TransactionDomain, error) {
-	trxCreate, err := trx.TransactionRepo.Get(ctx, id)
+	trxCreate, err := trx.TransactionRepo.GetTransaction(ctx, id)
 
 	if err != nil {
 		return nil, err

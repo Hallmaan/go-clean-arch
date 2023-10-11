@@ -1,4 +1,4 @@
-package database_mysql
+package connection
 
 import (
 	"fmt"
